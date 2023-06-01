@@ -3,13 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.CONFIG.ALL;
 
-
 entity banco_registradores is
-    generic (  
-        largura_ende : natural  :=  10;   -- tamanho do endereço dos 'weights'
-        conexoes     : natural  :=  784
-    );
-
     port (
         entrada_ende    : in std_logic_vector((largura_ende - 1) downto 0); 
         write_data_reg  : in std_logic_vector((weight_size - 1) downto 0);     
