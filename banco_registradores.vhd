@@ -6,7 +6,7 @@ use work.CONFIG.ALL;
 
 entity banco_registradores is
     generic (  
-        largura_ende : natural  :=  5;   -- tamanho do endereço dos 'weights'
+        largura_ende : natural  :=  10;   -- tamanho do endereço dos 'weights'
         conexoes     : natural  :=  784
     );
 
@@ -19,7 +19,7 @@ entity banco_registradores is
 end banco_registradores;
 
 architecture comportamental of banco_registradores is
-    type registerfile is array(0 to conexoes - 1) of std_logic_vector((weight_size - 1) downto 0);
+    type registerfile is array(conexoes - 1 downto 0) of std_logic_vector((weight_size - 1) downto 0);
     signal banco : registerfile := (others => (others => '0'));
 begin
     leitura : process (clk, entrada_ende) is 

@@ -1,19 +1,12 @@
--- Universidade Federal de Minas Gerais
--- Escola de Engenharia
--- Departamento de Engenharia Eletrônica
--- Autoria: Professor Ricardo de Oliveira Duarte
--- Registrador de carga paralela de tamanho genérico com WE e reset síncrono em nível lógico 1
 library ieee;
 use ieee.std_logic_1164.all;
+use work.CONFIG.ALL;
 
 entity registrador is
-    generic (
-        largura_dado : natural := 32
-    );
     port (
-        entrada_dados  : in std_logic_vector((largura_dado - 1) downto 0);
+        entrada_dados  : in std_logic_vector((weight_size - 1) downto 0);
         WE, clk, reset : in std_logic;
-        saida_dados    : out std_logic_vector((largura_dado - 1) downto 0)
+        saida_dados    : out std_logic_vector((weight_size - 1) downto 0)
     );
 end registrador;
 

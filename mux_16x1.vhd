@@ -3,17 +3,14 @@ use ieee.std_logic_1164.all;
 use work.CONFIG.ALL;
 
 entity mux161 is
-    generic (
-        largura_dado : natural := 32
-    );
     port (
         dado_ent_0, dado_ent_1, dado_ent_2, dado_ent_3, 
         dado_ent_4, dado_ent_5,dado_ent_6, dado_ent_7, 
         dado_ent_8, dado_ent_9, dado_ent_10, dado_ent_11,
         dado_ent_12,dado_ent_13,dado_ent_14,dado_ent_15 
-        : in std_logic_vector((weight_size - 1) downto 0);
+        : in std_logic_vector((data_size - 1) downto 0);
         sele_ent                                       : in std_logic_vector(3 downto 0);
-        dado_sai                                       : out std_logic_vector((weight_size - 1) downto 0)
+        dado_sai                                       : out std_logic_vector((data_size - 1) downto 0)
     );
 end mux161;
 
