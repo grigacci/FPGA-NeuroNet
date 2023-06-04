@@ -17,7 +17,7 @@ entity acummulator is
 end acummulator;
 
 architecture comportamental of acummulator is
-variable parcial : integer :=0 ;
+variable parcial : integer := 0;
 begin
     process(data_in_acc,done_in_acc,clk_acc)
     begin

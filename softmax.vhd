@@ -22,7 +22,7 @@ begin
     begin
         for i in 0 to 9 loop
             sel <= std_logic_vector(to_unsigned(i,sel'length));         --Select the mux data_out_softmax
-            one_hot(i) <= data_in_softmax;                                        --Add the input to the array
+            one_hot(i) <= data_in_softmax;                              --Add the input to the array
             if (one_hot(i) >= foundmax) then                            --Find the max value of the array
                 foundmax := one_hot(i);                                 --Aux to save the max value yet
                 index := i;                                             --Save the index of the max value
