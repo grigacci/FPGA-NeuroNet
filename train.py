@@ -65,4 +65,5 @@ qmodel.summary()
 
 print_qstats(qmodel)
 
-model_save_quantized_weights(qmodel,filename='./Weights/trained_values')
+model_save_quantized_weights(qmodel,filename='./Weights/trained_values.hdf5')
+
