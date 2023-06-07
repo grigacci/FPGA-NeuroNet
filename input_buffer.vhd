@@ -7,11 +7,11 @@ entity input_buffer is
     port (
         clk             : in std_logic;
         input           : in std_logic_vector(weight_size - 1 downto 0);               --Pixel value input
-        pixel_addr_in   : in std_logic_vector(largura_ende - 1 downto 0);                --Pixel address
+        pixel_addr_in   : in std_logic_vector(address_size - 1 downto 0);                --Pixel address
         ready           : in std_logic_vector(number_of_neurons - 1 downto 0);         --Signal from the neuron after analyzing all the values
 
         clk_o           : out std_logic;                                               --Clk_o
-        address         : out std_logic_vector(largura_ende - 1 downto 0);             
+        address         : out std_logic_vector(address_size - 1 downto 0);             
         output          : out std_logic_vector(weight_size - 1 downto 0);
         valid_out       : out std_logic
     );

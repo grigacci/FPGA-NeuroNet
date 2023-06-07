@@ -9,28 +9,25 @@ entity acummulator is
         done_in_acc         : in std_logic;
         clk_acc             : in std_logic;
 
-        data_out_acc        : out std_logic_vector(data_size - 1 downto 0);
-        data_valid_out_acc  : out std_logic;
-
+        data_o_acc        : out std_logic_vector(data_size - 1 downto 0);
         clk_o_acc           : out std_logic
     );
 end acummulator;
 
 architecture comportamental of acummulator is
 variable parcial : integer := 0;
+signal last_value : std_logic_vector(data_size - 1 downto 0);
 begin
     process(data_in_acc,done_in_acc,clk_acc)
     begin
         if (done_in_acc = '0')  then
-
             parcial := parcial + to_integer(signed(data));
 
         else 
-
-            data_out_acc <= std_logic_vector(to_signed(parcial, data_out_acc'length));
-            data_valid_out_acc  <= '1';
+            last_value <= std_logic_vector(to_signed(parcial, data_o_acc'length));
 
         end if;
     clk_o_acc <= clk_acc;
+    data_o_acc <= last_value;
     end process;
 end comportamental;

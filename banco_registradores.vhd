@@ -5,7 +5,7 @@ use work.CONFIG.ALL;
 
 entity banco_registradores is
     port (
-        entrada_ende    : in std_logic_vector((largura_ende - 1) downto 0); 
+        entrada_ende    : in std_logic_vector((address_size - 1) downto 0); 
         write_data_reg  : in std_logic_vector((weight_size - 1) downto 0);     
         saida_dado      : out std_logic_vector((weight_size - 1) downto 0);
         clk, RegWEN     : in std_logic

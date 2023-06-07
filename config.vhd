@@ -10,7 +10,7 @@ package CONFIG is
 	constant number_of_neurons : integer := 20;
 	constant input_size		: integer := 784;
 
-	constant largura_ende 	: integer  :=  10;   -- tamanho do endereço dos 'weights'
+	constant address_size 	: integer  :=  10;   -- tamanho do endereço dos 'weights'
 	constant conexoes     	: integer  :=  784;
 
 	constant output_classes : integer := 10;	--Number os possible outputs
