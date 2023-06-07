@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.float_pkg.all;
 use work.CONFIG.ALL;
-use work.mulmatmem.ALL;
+use work.mulmat_mem.ALL;
 
 entity mulmat is
     port (

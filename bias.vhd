@@ -6,10 +6,10 @@ use work.CONFIG.ALL;
 
 entity bias is
     port (
-        data_in_bias                 : in std_logic_vector(data_size - 1 downto 0);    
+        data_in_bias            : in std_logic_vector(data_size - 1 downto 0);    
         clk_bias                : in std_logic;
 
-        data_o_bias                : out std_logic_vector(data_size - 1 downto 0);
+        data_o_bias             : out std_logic_vector(data_size - 1 downto 0);
         clk_o_bias              : out std_logic
     );
 end bias;
