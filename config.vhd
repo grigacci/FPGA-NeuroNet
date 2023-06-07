@@ -3,7 +3,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 package CONFIG is
-    constant weight_size  	: integer := 8;  	--Weight size
+    constant weight_size  	: integer := 4;  	--Weight size
+	constant bias_size		: integer := 4;		--Bias size
 	constant data_size 		: integer := 16;	--Data size
 
 	constant number_of_neurons : integer := 20;

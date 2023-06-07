@@ -18,7 +18,6 @@ def print_sofmax():
     g2_items = list(g2.items())
     print("Items in group 2: ", g2_items)
 
-
     bias = np.array(g2.get('bias:0'))
     print("Bias : ",bias)
 

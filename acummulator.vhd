@@ -23,11 +23,11 @@ begin
     begin
         if (done_in_acc = '0')  then
 
-            parcial := parcial + to_integer(unsigned(data));
+            parcial := parcial + to_integer(signed(data));
 
         else 
 
-            data_out_acc <= std_logic_vector(to_unsigned(parcial, data_out_acc'length));
+            data_out_acc <= std_logic_vector(to_signed(parcial, data_out_acc'length));
             data_valid_out_acc  <= '1';
 
         end if;

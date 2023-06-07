@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.float_pkg.all;
 use work.CONFIG.ALL;
 
 entity bias is
@@ -14,13 +15,13 @@ entity bias is
 end bias;
 
 architecture comportamental of bias is
-    signal bias : std_logic_vector(weight_size - 1 downto 0);
+    signal bias : float(bias_size - 1 downto 0);
     signal aux  : integer;
 begin
     process(data_in,clk_bias)
     begin
-        aux <= to_integer(unsigned(data_in)) + to_integer(unsigned(bias));
-        data_out <= std_logic_vector(to_unsigned(aux,data_out'length));
+        aux <= to_integer(signed(data_in)) + to_integer(signed(bias));
+        data_out <= std_logic_vector(to_signed(aux,data_out'length));
         clk_o_bias <= clk_bias;
     end process;
 end comportamental;

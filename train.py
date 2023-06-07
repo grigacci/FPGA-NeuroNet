@@ -36,12 +36,12 @@ def get_data():
 def CreateQModel(shape, nb_classes):
     x = x_in = Input(shape)
     x = Flatten()(x)
-    x = QDense(20, kernel_quantizer=quantized_bits(8,0,1),
-           bias_quantizer=quantized_bits(8,0,1),
+    x = QDense(20, kernel_quantizer=quantized_bits(4,0,1),
+           bias_quantizer=quantized_bits(4,0,1),
            name="dense_relu")(x)
     x = Activation("relu", name="relu")(x)
-    x = QDense(nb_classes, kernel_quantizer=quantized_bits(8,0,1),
-           bias_quantizer=quantized_bits(8,0,1),
+    x = QDense(nb_classes, kernel_quantizer=quantized_bits(4,0,1),
+           bias_quantizer=quantized_bits(4,0,1),
            name="dense_sofmax")(x)
     x = Activation("softmax", name="softmax")(x)
 

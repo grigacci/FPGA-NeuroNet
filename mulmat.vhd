@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.float_pkg.all;
 use work.CONFIG.ALL;
 
 entity mulmat is
@@ -18,7 +19,7 @@ entity mulmat is
 end mulmat;
 
 architecture comportamental of mulmat is
-    type registerfile is array(input_size - 1 downto 0) of std_logic_vector((weight_size - 1) downto 0);
+    type registerfile is array(input_size - 1 downto 0) of float((weight_size - 1) downto 0);
     signal banco : registerfile := (others => (others => '0'));
 begin
     process(data_in_mulmat,addr_in,clk_mulmat)
@@ -32,7 +33,7 @@ begin
             ready_o_mulmat <= '1';
         
         else
-            data_out_mulmat <= std_logic_vector(((unsigned(data_in_mulmat))) * unsigned(banco(to_integer(unsigned(addr_in)))));
+            data_out_mulmat <= std_logic_vector(((signed(data_in_mulmat))) * signed(banco(to_integer(unsigned(addr_in)))));
             done_o_mulmat <= '0';
             ready_o_mulmat <= '1';
         end if;
