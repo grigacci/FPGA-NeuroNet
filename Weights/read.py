@@ -1,45 +1,65 @@
 import h5py
 import numpy as np
+import sys
+
 data = h5py.File("trained_values.hdf5", "r") 
-
-print(list(data.keys()))
 base_items = list(data.items())
-print("Items in the base directory: ", base_items)
-print("-------------------------------------------------------")
 
-def print_sofmax():
-    print("-------------- Sofmax ------------------------------------------------------")
+g1 = data.get('dense_sofmax')
+g1_items = list(g1.items())
+g2 = data.get('dense_sofmax/dense_sofmax')
+g2_items = list(g2.items())
 
-    g1 = data.get('dense_sofmax')
-    g1_items = list(g1.items())
-    print("Items in group 1: ", g1_items) 
+bias = np.array(g2.get('bias:0'))
 
-    g2 = data.get('dense_sofmax/dense_sofmax')
-    g2_items = list(g2.items())
-    print("Items in group 2: ", g2_items)
+np.savetxt("softmax_bias.txt", bias, delimiter=",", fmt="%10.3f",newline=",",header='')
 
-    bias = np.array(g2.get('bias:0'))
-    print("Bias : ",bias)
+with open('softmax_bias.txt', 'rb+') as original:
+    original.seek(-1, 2)
+    original.truncate()
+with open('softmax_bias.txt', 'a') as f: f.write(")")
+with open('softmax_bias.txt', 'r') as original: data1 = original.read()
+with open('softmax_bias.txt', 'w') as modified: modified.write("(" + data1)
 
-    kernel = np.array(g2.get('kernel:0'))
-    print("Kernel : ", kernel)
+kernel = np.array(g2.get('kernel:0'))
 
-def print_denserelu():
-    print("-------------- Dense ReLU ---------------------------------------------------")
+np.savetxt("softmax_weights.txt", kernel, delimiter=",", fmt="%10.3f",newline="),(",header='')
 
-    g1 = data.get('dense_relu')
-    g1_items = list(g1.items())
-    print("Items in group 1: ", g1_items)
+with open('softmax_weights.txt', 'rb+') as original:
+    original.seek(-2, 2)
+    original.truncate()
+with open('softmax_weights.txt', 'a') as f: f.write(")")
+with open('softmax_weights.txt', 'r') as original: data2 = original.read()
+with open('softmax_weights.txt', 'w') as modified: modified.write("((" + data2)
 
-    g2 = data.get('dense_relu/dense_relu')
-    g2_items = list(g2.items())
-    print("Items in group 2: ", g2_items) 
+g1 = data.get('dense_relu')
+g1_items = list(g1.items())
+g2 = data.get('dense_relu/dense_relu')
+g2_items = list(g2.items())
 
-    bias = np.array(g2.get('bias:0'))
-    print("Bias : ",bias)
+bias = np.array(g2.get('bias:0'))
 
-    kernel = np.array(g2.get('kernel:0'))
-    print("Kernel : ", kernel)
+np.savetxt("relu_bias.txt", bias, delimiter=",", fmt="%10.3f",newline=",",header='')
 
-print_sofmax()
-print_denserelu()
+with open('relu_bias.txt', 'rb+') as original:
+    original.seek(-1, 2)
+    original.truncate()
+with open('relu_bias.txt', 'a') as f: f.write(")")
+with open('relu_bias.txt', 'r') as original: data3 = original.read()
+with open('relu_bias.txt', 'w') as modified: modified.write("(" + data3)
+
+
+kernel = np.array(g2.get('kernel:0'))
+
+np.savetxt("relu_weights.txt", kernel, delimiter=",", fmt="%10.3f",newline="),(",header='')
+
+with open('relu_weights.txt', 'rb+') as original:
+    original.seek(-2, 2)
+    original.truncate()
+with open('relu_weights.txt', 'a') as f: f.write(")")
+with open('relu_weights.txt', 'r') as original: data4 = original.read()
+with open('relu_weights.txt', 'w') as modified: modified.write("((" + data4)
+        
+print("File exported")
+
+
