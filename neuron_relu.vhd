@@ -1,9 +1,13 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use work.CONFIG.ALL;
-use work.mulmatmem.ALL;
+use work.mulmat_relu_mem.ALL;
 
-entity neuron is 
+entity neuron_relu is 
+    generic (
+        neuron_number: integer
+    );
+
     port (
         data    : in std_logic_vector(data_size - 1 downto 0);
         address : in std_logic_vector(address_size - 1 downto 0);  
@@ -13,14 +17,17 @@ entity neuron is
         data_o  : out std_logic_vector(data_size - 1 downto 0);
         ready_o : out std_logic;
         clk_o   : out std_logic
-
     );
-end neuron;
+end neuron_relu;
 
-architecture comportamental of neuron is
+architecture comportamental of neuron_relu is
     --declaring all internal components 
 
-    component mulmat is
+    component mulmat_relu is
+        generic (
+            instance_number : integer
+        );
+
         port (
             data_in_mulmat        : in std_logic_vector(data_size - 1 downto 0);    
             addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
@@ -45,13 +52,17 @@ architecture comportamental of neuron is
         );
     end component;
 
-    component bias is 
+    component bias_relu is 
+        generic (
+            instance_number : integer
+        );
+
         port (
-            data_in_bias            : in std_logic_vector(data_size - 1 downto 0);    
-            clk_bias                : in std_logic;
+            data_in_bias_relu            : in std_logic_vector(data_size - 1 downto 0);    
+            clk_bias_relu                : in std_logic;
     
-            data_o_bias             : out std_logic_vector(data_size - 1 downto 0);
-            clk_o_bias              : out std_logic
+            data_o_bias_relu             : out std_logic_vector(data_size - 1 downto 0);
+            clk_o_bias_relu              : out std_logic
         );
     end component;
 
@@ -72,12 +83,16 @@ architecture comportamental of neuron is
     signal aux_data_o_acc    : std_logic_vector(data_size - 1 downto 0);
     signal aux_clk_o_acc     : std_logic;
     
-    signal aux_data_o_bias   : std_logic_vector(data_size - 1 downto 0);
-    signal aux_clk_o_bias    : std_logic;
+    signal aux_data_o_bias_relu   : std_logic_vector(data_size - 1 downto 0);
+    signal aux_clk_o_bias_relu    : std_logic;
 
 begin
 
-    instancia_mulmat : component mulmat
+    instancia_mulmat : component mulmat_relu
+        generic map (
+            instance_number => neuron_number
+        )
+
         port map(
             --input----------------
             data_in_mulmat => data,
@@ -104,22 +119,26 @@ begin
             clk_o_acc => aux_clk_o_acc
         );
 
-    instancia_bias : component bias 
+    instancia_bias_relu : component bias_relu 
+        generic map (
+            instance_number => neuron_number
+        )
+
         port map (
             --input----------------
-            data_in_bias => aux_data_o_acc,
-            clk_bias => aux_clk_o_acc,
+            data_in_bias_relu => aux_data_o_acc,
+            clk_bias_relu => aux_clk_o_acc,
 
             --output---------------
-            data_o_bias => aux_data_o_bias,
-            clk_o_bias => aux_clk_o_bias
+            data_o_bias_relu => aux_data_o_bias_relu,
+            clk_o_bias_relu => aux_clk_o_bias_relu
         );
 
     instancia_relu : component relu 
         port map (
             --input----------------
-            data_in_relu => aux_data_o_bias,
-            clk_relu => aux_clk_o_bias,
+            data_in_relu => aux_data_o_bias_relu,
+            clk_relu => aux_clk_o_bias_relu,
 
             --output---------------
             data_o_relu => data_o,

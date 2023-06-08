@@ -4,9 +4,14 @@ use IEEE.NUMERIC_STD.ALL;
 use work.CONFIG.ALL;
 use ieee.float_pkg.all;
 
-package mulmat_mem is
-    type float_matrix is array (0 to number_of_neurons - 1,0 to input_size -1)  of  float(weight_size/2 downto -weight_size/2);
-    constant weights : float_matrix := 
+package mulmat_relu_mem is
+    type bias_array is array (0 to number_of_neurons - 1) of float(0 downto -weight_size + 1); 
+    type float_matrix is array (0 to number_of_neurons - 1,0 to input_size -1)  of  float(0 downto -weight_size + 1);
+
+    constant relu_bias : bias_array := 
+    (to_float(0.875),to_float(0.875),to_float(0.875),to_float(-0.875),to_float(-0.500),to_float(0.125),to_float(-0.375),to_float(-0.500),to_float(0.375),to_float(0.500),to_float(-0.500),to_float(-0.250),to_float(0.875),to_float(0.875),to_float(-0.500),to_float(-0.875),to_float(-0.875),to_float(0.750),to_float(-0.250),to_float(0.000));
+
+    constant relu_weights : float_matrix := 
     ((to_float(0.000),to_float(0.000),to_float(-0.125),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.125),to_float(0.000)),
     (to_float(0.125),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.125),to_float(-0.125),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.125),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000)),
     (to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.125),to_float(0.000),to_float(0.000),to_float(-0.125),to_float(0.000),to_float(-0.125),to_float(0.000),to_float(-0.125),to_float(0.125),to_float(0.000)),
@@ -792,4 +797,4 @@ package mulmat_mem is
     (to_float(0.000),to_float(0.000),to_float(0.125),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(-0.125),to_float(0.125),to_float(0.000),to_float(0.000),to_float(-0.125)),
     (to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.125),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.000),to_float(0.125)));
 
-end mulmat_mem;
+end mulmat_relu_mem;

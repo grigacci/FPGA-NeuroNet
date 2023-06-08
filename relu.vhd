@@ -14,7 +14,7 @@ entity relu is
 end relu;
 
 architecture comportamental of relu is
-    signal zero : std_logic_vector(data_size - 1 downto 0) := ((others => '0'));
+    signal zero : std_logic_vector(data_size - 1 downto 0) := (others => '0');
 begin
     process(data_in_relu)
     begin
