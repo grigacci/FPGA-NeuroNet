@@ -65,5 +65,5 @@ architecture comportamental of neural_net is
 
 begin
 
-
+ -- continuar
 end architecture;
