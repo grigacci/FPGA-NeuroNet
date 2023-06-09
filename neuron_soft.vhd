@@ -12,7 +12,7 @@ entity neuron_soft is
         data    : in std_logic_vector(data_size - 1 downto 0);
         address : in std_logic_vector(address_size - 1 downto 0);  
         clk     : in std_logic;
-        valid   : in std_logic;
+        --valid   : in std_logic;
 
         data_o  : out std_logic_vector(data_size - 1 downto 0);
         ready_o : out std_logic;
@@ -32,7 +32,7 @@ architecture comportamental of neuron_soft is
             data_in_mulmat        : in std_logic_vector(data_size - 1 downto 0);    
             addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
             clk_mulmat            : in std_logic;
-            valid_in_mulmat       : in std_logic;
+            --valid_in_mulmat       : in std_logic;
     
             data_out_mulmat       : out std_logic_vector(data_size - 1 downto 0);
             done_o_mulmat         : out std_logic;
@@ -86,7 +86,7 @@ begin
             data_in_mulmat => data,
             addr_in_mulmat => address,
             clk_mulmat => clk,
-            valid_in_mulmat => valid,
+            --valid_in_mulmat => valid,
 
             --output---------------
             data_out_mulmat => aux_data_o_mulmat,

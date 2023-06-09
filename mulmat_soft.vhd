@@ -14,7 +14,7 @@ entity mulmat_soft is
         data_in_mulmat        : in std_logic_vector(data_size - 1 downto 0);    
         addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
         clk_mulmat            : in std_logic;
-        valid_in_mulmat       : in std_logic;
+        --valid_in_mulmat       : in std_logic;
 
         data_out_mulmat       : out std_logic_vector(data_size - 1 downto 0);
         done_o_mulmat         : out std_logic;
@@ -37,11 +37,11 @@ begin
                 weight(i) <= soft_weights(instance_number,i);
             end loop;
             initialized := True; 
-            end if;
+        end if;
 
         ready_o_mulmat <= '0';
 
-        if valid_in_mulmat then
+        --if valid_in_mulmat then
 
         if(to_integer(unsigned(addr_in_mulmat)) = input_size - 1) then
             done_o_mulmat <= '1';
@@ -54,6 +54,6 @@ begin
         end if;
 
     clk_o_mulmat <= clk_mulmat;
-    end if;
+    --end if;
     end process;
 end comportamental;

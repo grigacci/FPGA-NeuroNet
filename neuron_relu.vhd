@@ -12,7 +12,8 @@ entity neuron_relu is
         data    : in std_logic_vector(data_size - 1 downto 0);
         address : in std_logic_vector(address_size - 1 downto 0);  
         clk     : in std_logic;
-        valid   : in std_logic;
+        --valid   : in std_logic;
+        ready_in: in std_logic_vector(output_classes - 1 downto 0);
 
         data_o  : out std_logic_vector(data_size - 1 downto 0);
         ready_o : out std_logic;
@@ -32,7 +33,8 @@ architecture comportamental of neuron_relu is
             data_in_mulmat        : in std_logic_vector(data_size - 1 downto 0);    
             addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
             clk_mulmat            : in std_logic;
-            valid_in_mulmat       : in std_logic;
+            --valid_in_mulmat       : in std_logic;
+            ready_in_mulmat       : in std_logic_vector(output_classes - 1 downto 0);
     
             data_out_mulmat       : out std_logic_vector(data_size - 1 downto 0);
             done_o_mulmat         : out std_logic;
@@ -98,7 +100,8 @@ begin
             data_in_mulmat => data,
             addr_in_mulmat => address,
             clk_mulmat => clk,
-            valid_in_mulmat => valid,
+            --valid_in_mulmat => valid,
+            ready_in_mulmat => ready_in,
 
             --output---------------
             data_out_mulmat => aux_data_o_mulmat,
@@ -144,4 +147,5 @@ begin
             data_o_relu => data_o,
             clk_o_relu => clk_o
         );
+
 end architecture;
