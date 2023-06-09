@@ -11,7 +11,6 @@ package CONFIG is
 	constant input_size		: integer := 784;
 
 	constant address_size 	: integer  :=  10;   -- tamanho do endereço dos 'weights'
-	constant conexoes     	: integer  :=  784;
 
 	constant output_classes : integer := 10;	--Number os possible outputs
 end CONFIG;

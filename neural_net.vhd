@@ -11,7 +11,7 @@ entity neural_net is
         pixel : in std_logic_vector(data_size - 1 downto 0);
         addr  : in std_logic_vector(address_size - 1 downto 0);
         clk   : in std_logic;
-        valid_in : in std_logic;
+        --valid_in : in std_logic;
 
         output : out std_logic_vector(3 downto 0);
         clk_o  : out std_logic

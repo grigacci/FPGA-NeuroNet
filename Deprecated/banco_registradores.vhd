@@ -13,7 +13,7 @@ entity banco_registradores is
 end banco_registradores;
 
 architecture comportamental of banco_registradores is
-    type registerfile is array(conexoes - 1 downto 0) of std_logic_vector((weight_size - 1) downto 0);
+    type registerfile is array(input_size - 1 downto 0) of std_logic_vector((weight_size - 1) downto 0);
     signal banco : registerfile := (others => (others => '0'));
 begin
     leitura : process (clk, entrada_ende) is 
