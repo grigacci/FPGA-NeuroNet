@@ -1,6 +1,7 @@
 import six
 import numpy as np
 import tensorflow.compat.v2 as tf
+import matplotlib.pyplot as plt
 
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import Model
@@ -30,7 +31,6 @@ def get_data():
     return (x_train, y_train), (x_test, y_test)
 
 (x_train, y_train), (x_test, y_test) = get_data()
-
 
 
 def CreateQModel(shape, nb_classes):
@@ -63,7 +63,18 @@ qmodel.fit(x_train, y_train, epochs=300, batch_size=128, validation_data=(x_test
 
 qmodel.summary()
 
-print_qstats(qmodel)
+#print_qstats(qmodel)
 
-model_save_quantized_weights(qmodel,filename='./Weights/trained_values.hdf5')
+##model_save_quantized_weights(qmodel,filename='./Weights/trained_values.hdf5')
 
+
+while True :
+    input_a = input("Enter the index to acess: ")
+    image_index = int(input_a)
+    plt.figure(figsize=(11,6))
+    plt.imshow(x_test[image_index].reshape(28, 28),cmap='Greys')
+    plt.show()
+    pred = qmodel.predict(x_test[image_index].reshape(1, 28, 28, 1))
+    print("Predicted :",pred.argmax())
+    print("Label : " ,y_test[image_index].argmax())
+    #print(x_test[image_index])
