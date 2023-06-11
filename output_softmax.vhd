@@ -2,15 +2,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.CONFIG.ALL;
-
-package bus_multiplexer_pkg is
-    type bus_array is array(natural range <>) of std_logic_vector;
-end package;
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use work.CONFIG.ALL;
 use work.bus_multiplexer_pkg.ALL;
 
 entity output_softmax is

@@ -7,14 +7,15 @@ from tensorflow.keras.layers import *
 from tensorflow.keras.models import Model
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.models import save_model
 
 from qkeras import *
 from qkeras.utils import *
 
 def get_data():
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
-    x_train = x_train.reshape(x_train.shape + (1,)).astype("float32")
-    x_test = x_test.reshape(x_test.shape + (1,)).astype("float32")
+    x_train = x_train.reshape(x_train.shape + (1,)).astype("float16")
+    x_test = x_test.reshape(x_test.shape + (1,)).astype("float16")
 
     x_train /= 256.0
     x_test /= 256.0
@@ -63,18 +64,6 @@ qmodel.fit(x_train, y_train, epochs=300, batch_size=128, validation_data=(x_test
 
 qmodel.summary()
 
-#print_qstats(qmodel)
+save_model(qmodel,'./Weights/saved_model.h5')
+model_save_quantized_weights(qmodel,filename='./Weights/trained_values.hdf5')
 
-##model_save_quantized_weights(qmodel,filename='./Weights/trained_values.hdf5')
-
-
-while True :
-    input_a = input("Enter the index to acess: ")
-    image_index = int(input_a)
-    plt.figure(figsize=(11,6))
-    plt.imshow(x_test[image_index].reshape(28, 28),cmap='Greys')
-    plt.show()
-    pred = qmodel.predict(x_test[image_index].reshape(1, 28, 28, 1))
-    print("Predicted :",pred.argmax())
-    print("Label : " ,y_test[image_index].argmax())
-    #print(x_test[image_index])
