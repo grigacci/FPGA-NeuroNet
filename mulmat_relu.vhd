@@ -4,6 +4,7 @@ use ieee.numeric_std.all;
 use ieee.float_pkg.all;
 use work.CONFIG.ALL;
 use work.mulmat_relu_mem.ALL;
+use ieee.fixed_pkg.all;
 
 entity mulmat_relu is
     generic (

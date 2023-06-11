@@ -1,7 +1,6 @@
 import six
 import numpy as np
 import tensorflow.compat.v2 as tf
-import matplotlib.pyplot as plt
 
 from tensorflow.keras.layers import *
 from tensorflow.keras.models import Model
@@ -29,7 +28,7 @@ def get_data():
     y_train = to_categorical(y_train, nb_classes)
     y_test = to_categorical(y_test, nb_classes)
 
-    return (x_train, y_train), (x_test, y_test)
+    return (x_train.astype("float16"), y_train.astype("float16")), (x_test.astype("float16"), y_test.astype("float16"))
 
 (x_train, y_train), (x_test, y_test) = get_data()
 
@@ -43,7 +42,7 @@ def CreateQModel(shape, nb_classes):
     x = Activation("relu", name="relu")(x)
     x = QDense(nb_classes, kernel_quantizer=quantized_bits(4,0,1),
            bias_quantizer=quantized_bits(4,0,1),
-           name="dense_sofmax")(x)
+           name="dense_softmax")(x)
     x = Activation("softmax", name="softmax")(x)
 
     model = Model(inputs=x_in, outputs=x)
