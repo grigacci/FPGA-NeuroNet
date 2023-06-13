@@ -4,6 +4,7 @@ use ieee.numeric_std.all;
 use ieee.float_pkg.all;
 use work.CONFIG.ALL;
 use work.mulmat_soft_mem.ALL;
+use work.bfloat_pkg.ALL;
 
 entity mulmat_soft is
     generic (
@@ -11,12 +12,12 @@ entity mulmat_soft is
     );
 
     port (
-        data_in_mulmat        : in std_logic_vector(data_size - 1 downto 0);    
+        data_in_mulmat        : in bfloat16;    
         addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
         clk_mulmat            : in std_logic;
         --valid_in_mulmat       : in std_logic;
 
-        data_out_mulmat       : out std_logic_vector(data_size - 1 downto 0);
+        data_out_mulmat       : out bfloat16;
         done_o_mulmat         : out std_logic;
         ready_o_mulmat        : out std_logic;
         clk_o_mulmat          : out std_logic
@@ -48,7 +49,7 @@ begin
             ready_o_mulmat <= '1';
         
         else
-            data_out_mulmat <= std_logic_vector(((signed(data_in_mulmat))) * signed(weight(to_integer(unsigned(addr_in_mulmat)))));
+            data_out_mulmat <= data_in_mulmat * weight(to_integer(unsigned(addr_in_mulmat)));
             done_o_mulmat <= '0';
             ready_o_mulmat <= '1';
         end if;

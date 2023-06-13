@@ -5,6 +5,7 @@ use ieee.float_pkg.all;
 use work.CONFIG.ALL;
 use work.mulmat_relu_mem.ALL;
 use ieee.fixed_pkg.all;
+use work.bfloat_pkg.ALL;
 
 entity mulmat_relu is
     generic (
@@ -13,12 +14,12 @@ entity mulmat_relu is
 
     port (
         ready_in_mulmat       : in std_logic_vector(output_classes - 1 downto 0);
-        data_in_mulmat        : in std_logic_vector(data_size - 1 downto 0);    
+        data_in_mulmat        : in bfloat16;    
         addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
         clk_mulmat            : in std_logic;
         --valid_in_mulmat       : in std_logic;
 
-        data_out_mulmat       : out std_logic_vector(data_size - 1 downto 0);
+        data_out_mulmat       : out bfloat16;
         done_o_mulmat         : out std_logic;
         ready_o_mulmat        : out std_logic;
         clk_o_mulmat          : out std_logic
@@ -27,7 +28,7 @@ end mulmat_relu;
 
 architecture comportamental of mulmat_relu is
 
-    type float_array is array (0 to input_size - 1) of float (0 downto -weight_size + 1);
+    type float_array is array (0 to input_size - 1) of float (0 downto - weight_size + 1);
     signal weight : float_array; 
     variable initialized : boolean := False;
 
@@ -51,7 +52,7 @@ begin
                 ready_o_mulmat <= '1';
             
             else
-                data_out_mulmat <= std_logic_vector(((signed(data_in_mulmat))) * signed(weight(to_integer(unsigned(addr_in_mulmat)))));
+                data_out_mulmat <= data_in_mulmat * (weight(to_integer(unsigned(addr_in_mulmat))));
                 done_o_mulmat <= '0';
                 ready_o_mulmat <= '1';
             end if;

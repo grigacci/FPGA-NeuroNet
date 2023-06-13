@@ -22,3 +22,13 @@ use IEEE.NUMERIC_STD.ALL;
 package bus_multiplexer_pkg is
     type bus_array is array(natural range <>) of std_logic_vector;
 end package;
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+use ieee.float_pkg.all;
+
+package bfloat_pkg is 
+	subtype bfloat16 is float(8 downto -7);
+	type bus_bfloat16 is array(natural range<>) of bfloat16;
+end package;

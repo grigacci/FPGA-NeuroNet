@@ -2,11 +2,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.CONFIG.ALL;
-use work.bus_multiplexer_pkg.ALL;
+use work.bfloat_pkg.ALL;
+use ieee.float_pkg.all;
 
 entity output_softmax is
     port (
-        data_in_output_softmax        : in bus_array(output_classes - 1 downto 0)(data_size - 1 downto 0);    
+        data_in_output_softmax        : in bus_bfloat16(output_classes - 1 downto 0);    
         clk_output_softmax            : in std_logic;
 
         data_o_output_softmax          : out std_logic_vector(3 downto 0);
@@ -15,7 +16,7 @@ entity output_softmax is
 end output_softmax;
 
 architecture comportamental of output_softmax is
-    signal max : std_logic_vector(data_size - 1 downto 0) := ((others => '0'));
+    signal max : bfloat16 := ((others => '0'));
 begin
     process(data_in_output_softmax,clk_output_softmax)
     begin
@@ -25,6 +26,6 @@ begin
             end if;
         end loop; 
     clk_o_output_softmax <= clk_output_softmax ;
-    data_o_output_softmax <= max;
+    data_o_output_softmax <= std_logic_vector(to_unsigned(to_integer(max),data_o_output_softmax'length));
     end process;
 end comportamental;

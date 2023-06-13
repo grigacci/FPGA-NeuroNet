@@ -5,10 +5,12 @@ use work.CONFIG.ALL;
 use work.mulmat_soft_mem.ALL;
 use work.mulmat_relu_mem.ALL;
 use work.bus_multiplexer_pkg.ALL;
+use work.bfloat_pkg.ALL;
+use ieee.float_pkg.all;
 
 entity neural_net is
     port (
-        pixel : in std_logic_vector(data_size - 1 downto 0);
+        pixel : in bfloat16;
         addr  : in std_logic_vector(address_size - 1 downto 0);
         clk   : in std_logic;
         --valid_in : in std_logic;
@@ -26,14 +28,14 @@ architecture behave of neural_net is
         );
     
         port (
-            data    : in std_logic_vector(data_size - 1 downto 0);
+            data    : in bfloat16;
             address : in std_logic_vector(address_size - 1 downto 0);  
             clk     : in std_logic;
             ready_in: in std_logic_vector(output_classes - 1 downto 0);
             --valid   : in std_logic;
             
             addr_o  : out std_logic_vector(address_size - 1 downto 0);
-            data_o  : out std_logic_vector(data_size - 1 downto 0);
+            data_o  : out bfloat16;
             ready_o : out std_logic;
             clk_o_relu   : out std_logic
         );
@@ -45,12 +47,12 @@ architecture behave of neural_net is
         );
     
         port (
-            data    : in std_logic_vector(data_size - 1 downto 0);
+            data    : in bfloat16;
             address : in std_logic_vector(address_size - 1 downto 0);  
             clk     : in std_logic;
             --valid   : in std_logic;
     
-            data_o  : out std_logic_vector(data_size - 1 downto 0);
+            data_o  : out bfloat16;
             ready_o : out std_logic;
             clk_o_soft   : out std_logic
         );
@@ -58,7 +60,7 @@ architecture behave of neural_net is
 
     component output_softmax is 
         port (
-            data_in_output_softmax        : in bus_array(output_classes - 1 downto 0)(data_size - 1 downto 0);    
+            data_in_output_softmax        : in bus_bfloat16(output_classes - 1 downto 0);    
             clk_output_softmax            : in std_logic;
     
             data_o_output_softmax          : out std_logic_vector(3 downto 0);
@@ -66,8 +68,8 @@ architecture behave of neural_net is
         );
     end component;
 
-    type relu_output is array (number_of_neurons - 1 downto 0) of std_logic_vector(data_size - 1 downto 0);
-    type soft_output is array (output_classes - 1 downto 0) of std_logic_vector(data_size - 1 downto 0);
+    type relu_output is array (number_of_neurons - 1 downto 0) of bfloat16;
+    type soft_output is array (output_classes - 1 downto 0) of bfloat16;
 
     signal aux_soft_output : soft_output;
     signal aux_relu_output : relu_output;
