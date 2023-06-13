@@ -20,12 +20,12 @@ architecture comportamental of output_softmax is
 begin
     process(data_in_output_softmax,clk_output_softmax)
     begin
-        for i in 0 to output_classes -1 loop 
+        for i in 0 to output_classes - 1 loop 
             if (data_in_output_softmax(i) > max) then
                 max <= data_in_output_softmax(i);
             end if;
         end loop; 
     clk_o_output_softmax <= clk_output_softmax ;
-    data_o_output_softmax <= std_logic_vector(to_unsigned(to_integer(max),data_o_output_softmax'length));
+    data_o_output_softmax <= to_slv(max);
     end process;
 end comportamental;
