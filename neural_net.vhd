@@ -15,6 +15,7 @@ entity neural_net is
         clk   : in std_logic;
         --valid_in : in std_logic;
 
+        ready_input_o : std_logic_vector(number_of_neurons - 1 downto 0);
         output : out std_logic_vector(3 downto 0);
         clk_o  : out std_logic
     );

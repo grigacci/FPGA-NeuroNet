@@ -42,7 +42,17 @@ while True :
 
     test = x_test[image_index,0,0,0]
 
-    print("Type :",type(x_test))
+    #print("Type :",type(x_test))
+    #for i in x_test[image_index]:
+        #for x in x_test[image_index]:
+           # print(x_test[image_index])
+      #  print('\n')
+
+    for i in range(28):
+        for x in range(28):
+            print(",to_float(%.5f)" % x_test[image_index,i,x], end='')
+        print("),(")
+    #print(x_test[image_index,10,2])
     #print(f'{x_test[image_index]}')
     print("Predicted :",pred.argmax())
     print("Label : " ,y_test[image_index].argmax())

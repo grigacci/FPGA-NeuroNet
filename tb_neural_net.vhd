@@ -2,6 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.CONFIG.ALL;
+use work.input_data.ALL;
+use work.bfloat_pkg.ALL;
+use ieee.float_pkg.all;
 
 entity tb_neural_net is
 end tb_neural_net;
@@ -10,9 +13,10 @@ architecture rtl of tb_neural_net is
 
     component neural_net 
         port (
-            pixel : in std_logic_vector(data_size - 1 downto 0);
+            pixel : in bfloat16;
             addr  : in std_logic_vector(address_size - 1 downto 0);
             clk   : in std_logic;
+            ready_i : in std_logic_vector(number_of_neurons - 1 downto 0);
             --valid_in : in std_logic;
     
             output : out std_logic_vector(3 downto 0);
@@ -21,9 +25,10 @@ architecture rtl of tb_neural_net is
         end component; 
 
         signal clock : std_logic;
-        signal pixel_in : std_logic_vector(data_size - 1 downto 0);
+        signal pixel_in : bfloat16;
         signal addr_in : std_logic_vector(address_size - 1 downto 0);
         signal output_o : std_logic_vector(3 downto 0);
+        signal ready_in_i : std_logic_vector(number_of_neurons - 1 downto 0);
 
         constant PERIOD    : time := 20 ns;
         constant DUTY_CYCLE : real := 0.5;
@@ -37,7 +42,8 @@ begin
         pixel => pixel_in,
         addr => addr_in,
         clk => clock,
-        output => output_o
+        output => output_o,
+        ready_i => ready_in_i
     );
 
     gen_clock: process
@@ -51,6 +57,14 @@ begin
 		end loop CLOCK_LOOP;
 	end process;
 
-
+    input : process 
+    begin
+        for i in 27 downto 0 loop
+            for x in 27 downto 0 loop
+                wait until ready_in_i = (others => '1');
+                pixel_in <= input_image(i,x);
+            end loop;
+        end loop;
+    end process;
 
 end architecture;
