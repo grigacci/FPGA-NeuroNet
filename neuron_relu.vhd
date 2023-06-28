@@ -16,10 +16,10 @@ entity neuron_relu is
         clk     : in std_logic;
         --valid   : in std_logic;
         ready_in: in std_logic_vector(output_classes - 1 downto 0);
-
+        
         data_o  : out bfloat16;
         ready_o : out std_logic;
-        clk_o   : out std_logic
+        clk_o_relu   : out std_logic
     );
 end neuron_relu;
 
@@ -147,7 +147,7 @@ begin
 
             --output---------------
             data_o_relu => data_o,
-            clk_o_relu => clk_o
+            clk_o_relu => clk_o_relu
         );
 
 end architecture;

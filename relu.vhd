@@ -16,10 +16,11 @@ entity relu is
 end relu;
 
 architecture comportamental of relu is
+    signal zero : bfloat16 := (others => '0');
 begin
     process(data_in_relu)
     begin
-    if (data_in_relu > (others => '0')) then
+    if (data_in_relu > zero) then
         data_o_relu <= data_in_relu;
     else 
         data_o_relu <= ((others => '0'));

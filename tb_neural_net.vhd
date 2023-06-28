@@ -16,9 +16,9 @@ architecture rtl of tb_neural_net is
             pixel : in bfloat16;
             addr  : in std_logic_vector(address_size - 1 downto 0);
             clk   : in std_logic;
-            ready_i : in std_logic_vector(number_of_neurons - 1 downto 0);
+            --ready_in : out std_logic_vector(number_of_neurons - 1 downto 0);
             --valid_in : in std_logic;
-    
+            ready_input_o : out std_logic_vector(number_of_neurons - 1 downto 0);
             output : out std_logic_vector(3 downto 0);
             clk_o  : out std_logic
         );
@@ -33,7 +33,8 @@ architecture rtl of tb_neural_net is
         constant PERIOD    : time := 20 ns;
         constant DUTY_CYCLE : real := 0.5;
         constant OFFSET     : time := 5 ns;
-
+        
+        signal ones : std_logic_vector(number_of_neurons - 1 downto 0) := (others => '1');
 
 begin
 
@@ -43,13 +44,14 @@ begin
         addr => addr_in,
         clk => clock,
         output => output_o,
-        ready_i => ready_in_i
+        ready_input_o => ready_in_i
     );
 
     gen_clock: process
     begin
 		wait for OFFSET;
-		CLOCK_LOOP : loop
+		CLOCK_LOOP :
+        for i in 0 to 65535 loop
 			clock <= '1';
 			wait for (PERIOD - (PERIOD * DUTY_CYCLE));
 			clock <= '0';
@@ -61,8 +63,9 @@ begin
     begin
         for i in 27 downto 0 loop
             for x in 27 downto 0 loop
-                wait until ready_in_i = (others => '1');
-                pixel_in <= input_image(i,x);
+                while ready_in_i /= ones loop
+                    pixel_in <= input_image(i,x);
+                end loop;
             end loop;
         end loop;
     end process;

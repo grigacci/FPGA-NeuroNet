@@ -26,6 +26,6 @@ begin
             end if;
         end loop; 
     clk_o_output_softmax <= clk_output_softmax ;
-    data_o_output_softmax <= to_slv(max);
+    data_o_output_softmax <= to_slv(max)(data_o_output_softmax'length -1 downto 0);
     end process;
 end comportamental;

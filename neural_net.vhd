@@ -15,7 +15,7 @@ entity neural_net is
         clk   : in std_logic;
         --valid_in : in std_logic;
 
-        ready_input_o : std_logic_vector(number_of_neurons - 1 downto 0);
+        ready_input_o :out std_logic_vector(number_of_neurons - 1 downto 0);
         output : out std_logic_vector(3 downto 0);
         clk_o  : out std_logic
     );
@@ -35,7 +35,7 @@ architecture behave of neural_net is
             ready_in: in std_logic_vector(output_classes - 1 downto 0);
             --valid   : in std_logic;
             
-            addr_o  : out std_logic_vector(address_size - 1 downto 0);
+            --addr_o  : out std_logic_vector(address_size - 1 downto 0);
             data_o  : out bfloat16;
             ready_o : out std_logic;
             clk_o_relu   : out std_logic
@@ -78,6 +78,8 @@ architecture behave of neural_net is
     signal aux_ready_soft  : std_logic_vector(output_classes - 1 downto 0);
     signal aux_clk_o_relu  : std_logic;
     signal aux_clk_o_soft  : std_logic;
+    
+    signal aux_addr_o_relu : std_logic_vector(address_size - 1 downto 0); 
 
 begin
 
@@ -92,7 +94,8 @@ begin
                 clk => clk,
                 ready_in => aux_ready_soft,
                 --valid => valid_in,
-
+                
+                --addr_o => aux_addr_o_relu,
                 data_o => aux_relu_output(i),
                 ready_o => aux_ready_relu(i),
                 clk_o_relu => aux_clk_o_relu
@@ -107,13 +110,14 @@ begin
             )
             port map (
                 data => aux_relu_output(i),
-                address => addr,
+                address => aux_addr_o_relu,
                 clk => clk,
                 --valid => valid_in,
-
+                
+                
                 data_o => aux_soft_output(i),
                 ready_o => aux_ready_soft(i),
-                clk_o_soft => aux_clk_o_soft
+                clk_o_soft => open
             );
             end generate;
     

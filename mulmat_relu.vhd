@@ -28,21 +28,20 @@ end mulmat_relu;
 
 architecture comportamental of mulmat_relu is
 
-    type float_array is array (0 to input_size - 1) of float (0 downto - weight_size + 1);
+    type float_array is array (0 to input_size - 1) of f4;
     signal weight : float_array; 
-    variable initialized : boolean := False;
-
+    signal initialized : boolean := False;
+    signal one : std_logic_vector(output_classes - 1 downto 0) := (others => '1');
 begin
     process(data_in_mulmat,addr_in_mulmat,clk_mulmat)
     begin
-        if (ready_in_mulmat = (others => '1') ) then
+        --if (ready_in_mulmat = one ) then
             if initialized = false then                 --initialize the weight array
                 for i in 0 to input_size - 1 loop
-                    weight(i) <= relu_weights(instance_number,i);
+                    weight(i) <= relu_weights(i,instance_number);
                 end loop;
-                initialized := True; 
+                initialized <= True; 
             end if;
-
             ready_o_mulmat <= '0';
 
             --if valid_in_mulmat then
@@ -58,7 +57,7 @@ begin
             end if;
 
             clk_o_mulmat <= clk_mulmat;
-            end if;
+            --end if;
         --end if;
     end process;
 end comportamental;

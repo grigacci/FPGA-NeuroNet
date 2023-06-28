@@ -18,7 +18,7 @@ entity neuron_soft is
 
         data_o  : out bfloat16;
         ready_o : out std_logic;
-        clk_o   : out std_logic
+        clk_o_soft  : out std_logic
     );
 end neuron_soft;
 
@@ -31,15 +31,15 @@ architecture comportamental of neuron_soft is
         );
 
         port (
-            data_in_mulmat        : in bfloat16;    
-            addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
-            clk_mulmat            : in std_logic;
+            data_in_mulmat_soft        : in bfloat16;    
+            addr_in_mulmat_soft        : in std_logic_vector(address_size - 1 downto 0);
+            clk_mulmat_soft            : in std_logic;
             --valid_in_mulmat       : in std_logic;
     
-            data_out_mulmat       : out bfloat16;
-            done_o_mulmat         : out std_logic;
-            ready_o_mulmat        : out std_logic;
-            clk_o_mulmat          : out std_logic
+            data_o_mulmat_soft       : out bfloat16;
+            done_o_mulmat_soft         : out std_logic;
+            ready_o_mulmat_soft        : out std_logic;
+            clk_o_mulmat_soft          : out std_logic
         );
     end component;
 
@@ -60,21 +60,21 @@ architecture comportamental of neuron_soft is
         );
 
         port (
-            data_in_bias_relu            : in bfloat16;    
-            clk_bias_relu                : in std_logic;
+            data_in_bias_soft           : in bfloat16;    
+            clk_bias_soft               : in std_logic;
     
-            data_o_bias_relu             : out bfloat16;
-            clk_o_bias_relu              : out std_logic
+            data_o_bias_soft            : out bfloat16;
+            clk_o_soft_bias_soft             : out std_logic
         );
     end component;
 
 
-    signal aux_data_o_mulmat : bfloat16;
-    signal aux_done_o_mulmat : std_logic;
-    signal aux_clk_o_mulmat  : std_logic;
+    signal aux_data_o_mulmat_soft : bfloat16;
+    signal aux_done_o_mulmat_soft : std_logic;
+    signal aux_clk_o_mulmat_soft  : std_logic;
 
     signal aux_data_o_acc    : bfloat16;
-    signal aux_clk_o_acc     : std_logic;
+    signal aux_clk_o_soft_acc     : std_logic;
     
 begin
 
@@ -85,43 +85,43 @@ begin
 
         port map(
             --input----------------
-            data_in_mulmat => data,
-            addr_in_mulmat => address,
-            clk_mulmat => clk,
+            data_in_mulmat_soft => data,
+            addr_in_mulmat_soft => address,
+            clk_mulmat_soft => clk,
             --valid_in_mulmat => valid,
 
             --output---------------
-            data_out_mulmat => aux_data_o_mulmat,
-            done_o_mulmat => aux_done_o_mulmat,
-            ready_o_mulmat => ready_o,
-            clk_o_mulmat => aux_clk_o_mulmat
+            data_o_mulmat_soft => aux_data_o_mulmat_soft,
+            done_o_mulmat_soft => aux_done_o_mulmat_soft,
+            ready_o_mulmat_soft => ready_o,
+            clk_o_mulmat_soft => aux_clk_o_mulmat_soft
         );
     
     instancia_acummulator : component acummulator
         port map(
             --input----------------
-            data_in_acc => aux_data_o_mulmat,
-            done_in_acc => aux_done_o_mulmat,
-            clk_acc => aux_clk_o_mulmat,
+            data_in_acc => aux_data_o_mulmat_soft,
+            done_in_acc => aux_done_o_mulmat_soft,
+            clk_acc => aux_clk_o_mulmat_soft,
 
             --output---------------
             data_o_acc => aux_data_o_acc,
-            clk_o_acc => aux_clk_o_acc
+            clk_o_acc => aux_clk_o_soft_acc
         );
 
-    instancia_bias_relu : component bias_soft 
+    instancia_bias_soft: component bias_soft 
         generic map (
             instance_number => neuron_number
         )
 
         port map (
             --input----------------
-            data_in_bias_relu => aux_data_o_acc,
-            clk_bias_relu => aux_clk_o_acc,
+            data_in_bias_soft=> aux_data_o_acc,
+            clk_bias_soft=> aux_clk_o_soft_acc,
 
             --output---------------
-            data_o_bias_relu => data_o,
-            clk_o_bias_relu => clk_o
+            data_o_bias_soft=> data_o,
+            clk_o_soft_bias_soft=> clk_o_soft
         );
 
 end architecture;
