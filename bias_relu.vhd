@@ -16,19 +16,19 @@ entity bias_relu is
         data_in_bias_relu            : in bfloat16;    
         clk_bias_relu                : in std_logic;
 
-        data_o_bias_relu             : out bfloat16;
-        clk_o_bias_relu              : out std_logic
+        data_o_bias_relu             : out bfloat16
     );
 end bias_relu;
 
 architecture comportamental of bias_relu is
     signal bias_relu : float(0 downto -weight_size + 1) := relu_bias(instance_number);
-    signal aux  : bfloat16;
 begin
     process(data_in_bias_relu,clk_bias_relu)
     begin
-        aux <= data_in_bias_relu + bias_relu;
-        data_o_bias_relu <= aux;
-        clk_o_bias_relu <= clk_bias_relu;
+        if(rising_edge(clk_bias_relu)) then
+
+            data_o_bias_relu <= data_in_bias_relu + bias_relu;
+
+        end if;
     end process;
 end comportamental;

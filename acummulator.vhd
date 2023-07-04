@@ -11,26 +11,27 @@ entity acummulator is
         done_in_acc         : in std_logic;
         clk_acc             : in std_logic;
 
-        data_o_acc          : out bfloat16;
-        clk_o_acc           : out std_logic
+        data_o_acc          : out bfloat16
     );
 end acummulator;
 
 architecture comportamental of acummulator is
 signal out_acc : bfloat16 := (others => '0');
-signal parcial : bfloat16 := ((others => '0'));
+signal parcial : bfloat16 := ((others => '0')); 
 begin
     process(data_in_acc,done_in_acc,clk_acc)
     begin
-        if (done_in_acc = '0')  then
+        if(rising_edge(clk_acc)) then
+            if (done_in_acc = '0')  then
             parcial <= parcial + data_in_acc;
 
-        else 
-            out_acc <= parcial;
-            parcial <= (others => '0'); 
+            else 
+                out_acc <= parcial;
+                parcial <= (others => '0'); 
+            end if;
+
+        data_o_acc <= out_acc;
 
         end if;
-    clk_o_acc <= clk_acc;
-    data_o_acc <= out_acc;
     end process;
 end comportamental;

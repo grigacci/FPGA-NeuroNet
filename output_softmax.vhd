@@ -10,8 +10,7 @@ entity output_softmax is
         data_in_output_softmax        : in bus_bfloat16(output_classes - 1 downto 0);    
         clk_output_softmax            : in std_logic;
 
-        data_o_output_softmax          : out std_logic_vector(3 downto 0);
-        clk_o_output_softmax           : out std_logic
+        data_o_output_softmax         : out std_logic_vector(3 downto 0)
     );
 end output_softmax;
 
@@ -20,12 +19,14 @@ architecture comportamental of output_softmax is
 begin
     process(data_in_output_softmax,clk_output_softmax)
     begin
+        if(rising_edge(clk_output_softmax)) then
         for i in 0 to output_classes - 1 loop 
             if (data_in_output_softmax(i) > max) then
                 max <= data_in_output_softmax(i);
             end if;
         end loop; 
-    clk_o_output_softmax <= clk_output_softmax ;
-    data_o_output_softmax <= to_slv(max)(data_o_output_softmax'length -1 downto 0);
+
+        data_o_output_softmax <= to_slv(max)(data_o_output_softmax'length -1 downto 0);
+        end if;
     end process;
 end comportamental;

@@ -16,13 +16,10 @@ entity mulmat_relu is
         ready_in_mulmat       : in std_logic_vector(output_classes - 1 downto 0);
         data_in_mulmat        : in bfloat16;    
         addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
-        clk_mulmat            : in std_logic;
-        --valid_in_mulmat       : in std_logic;
+        clk_in_mulmat         : in std_logic;
 
         data_out_mulmat       : out bfloat16;
-        done_o_mulmat         : out std_logic;
-        ready_o_mulmat        : out std_logic;
-        clk_o_mulmat          : out std_logic
+        done_o_mulmat         : out std_logic
     );
 end mulmat_relu;
 
@@ -33,31 +30,23 @@ architecture comportamental of mulmat_relu is
     signal initialized : boolean := False;
     signal one : std_logic_vector(output_classes - 1 downto 0) := (others => '1');
 begin
-    process(data_in_mulmat,addr_in_mulmat,clk_mulmat)
+    process(data_in_mulmat,addr_in_mulmat,clk_in_mulmat )
     begin
-        --if (ready_in_mulmat = one ) then
+        if(rising_edge(clk_in_mulmat )) then
             if initialized = false then                 --initialize the weight array
                 for i in 0 to input_size - 1 loop
                     weight(i) <= relu_weights(i,instance_number);
                 end loop;
                 initialized <= True; 
             end if;
-            ready_o_mulmat <= '0';
-
-            --if valid_in_mulmat then
 
             if(to_integer(unsigned(addr_in_mulmat)) = input_size - 1) then
                 done_o_mulmat <= '1';
-                ready_o_mulmat <= '1';
-            
+         
             else
                 data_out_mulmat <= data_in_mulmat * (weight(to_integer(unsigned(addr_in_mulmat))));
                 done_o_mulmat <= '0';
-                ready_o_mulmat <= '1';
             end if;
-
-            clk_o_mulmat <= clk_mulmat;
-            --end if;
-        --end if;
+        end if;
     end process;
 end comportamental;

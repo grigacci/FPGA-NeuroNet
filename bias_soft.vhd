@@ -16,19 +16,19 @@ entity bias_soft is
         data_in_bias_soft            : in bfloat16;    
         clk_bias_soft                : in std_logic;
 
-        data_o_bias_soft             : out bfloat16;
-        clk_o_soft_bias_soft              : out std_logic
+        data_o_bias_soft             : out bfloat16
     );
 end bias_soft;
 
 architecture comportamental of bias_soft is
     signal bias_soft : float(0 downto -weight_size + 1) := soft_bias(instance_number);
-    signal aux  : bfloat16;
 begin
     process(data_in_bias_soft,clk_bias_soft)
     begin
-        aux <= data_in_bias_soft + bias_soft;
-        data_o_bias_soft <= aux;
-        clk_o_soft_bias_soft <= clk_bias_soft;
+        if(rising_edge(clk_bias_soft)) then
+
+            data_o_bias_soft <= data_in_bias_soft + bias_soft;
+            
+        end if;
     end process;
 end comportamental;

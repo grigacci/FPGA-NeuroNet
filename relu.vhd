@@ -10,8 +10,7 @@ entity relu is
         clk_relu       : in std_logic;
         data_in_relu   : in bfloat16;
 
-        data_o_relu    : out bfloat16;
-        clk_o_relu     : out std_logic
+        data_o_relu    : out bfloat16
     );
 end relu;
 
@@ -20,12 +19,12 @@ architecture comportamental of relu is
 begin
     process(data_in_relu)
     begin
-    if (data_in_relu > zero) then
-        data_o_relu <= data_in_relu;
-    else 
-        data_o_relu <= ((others => '0'));
+    if(rising_edge(clk_relu )) then
+        if (data_in_relu > zero) then
+            data_o_relu <= data_in_relu;
+        else 
+            data_o_relu <= ((others => '0'));
+        end if;
     end if;
-
-    clk_o_relu <= clk_relu;
     end process;
 end comportamental;
