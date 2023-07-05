@@ -14,12 +14,10 @@ entity neuron_relu is
         data    : in bfloat16;
         address : in std_logic_vector(address_size - 1 downto 0);  
         clk     : in std_logic;
-        --valid   : in std_logic;
-        ready_in: in std_logic_vector(output_classes - 1 downto 0);
+        --ready_in: in std_logic_vector(output_classes - 1 downto 0);
         
         data_o  : out bfloat16;
-        ready_o : out std_logic;
-        clk_o_relu   : out std_logic
+        ready_o : out std_logic
     );
 end neuron_relu;
 
@@ -35,13 +33,9 @@ architecture comportamental of neuron_relu is
             data_in_mulmat        : in bfloat16;    
             addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
             clk_mulmat            : in std_logic;
-            --valid_in_mulmat       : in std_logic;
-            ready_in_mulmat       : in std_logic_vector(output_classes - 1 downto 0);
     
             data_out_mulmat       : out bfloat16;
-            done_o_mulmat         : out std_logic;
-            ready_o_mulmat        : out std_logic;
-            clk_o_mulmat          : out std_logic
+            done_o_mulmat         : out std_logic
         );
     end component;
 
@@ -51,8 +45,7 @@ architecture comportamental of neuron_relu is
             done_in_acc         : in std_logic;
             clk_acc             : in std_logic;
     
-            data_o_acc          : out bfloat16;
-            clk_o_acc           : out std_logic
+            data_o_acc          : out bfloat16
         );
     end component;
 
@@ -65,8 +58,7 @@ architecture comportamental of neuron_relu is
             data_in_bias_relu            : in bfloat16;    
             clk_bias_relu                : in std_logic;
     
-            data_o_bias_relu             : out bfloat16;
-            clk_o_bias_relu              : out std_logic
+            data_o_bias_relu             : out bfloat16
         );
     end component;
 
@@ -75,20 +67,14 @@ architecture comportamental of neuron_relu is
             clk_relu       : in std_logic;
             data_in_relu   : in bfloat16;
             
-            data_o_relu    : out bfloat16;
-            clk_o_relu     : out std_logic
+            data_o_relu    : out bfloat16
         );
     end component;
 
     signal aux_data_o_mulmat : bfloat16;
     signal aux_done_o_mulmat : std_logic;
-    signal aux_clk_o_mulmat  : std_logic;
-
     signal aux_data_o_acc    : bfloat16;
-    signal aux_clk_o_acc     : std_logic;
-    
     signal aux_data_o_bias_relu   : bfloat16;
-    signal aux_clk_o_bias_relu    : std_logic;
 
 begin
 
@@ -102,14 +88,10 @@ begin
             data_in_mulmat => data,
             addr_in_mulmat => address,
             clk_mulmat => clk,
-            --valid_in_mulmat => valid,
-            ready_in_mulmat => ready_in,
 
             --output---------------
             data_out_mulmat => aux_data_o_mulmat,
-            done_o_mulmat => aux_done_o_mulmat,
-            ready_o_mulmat => ready_o,
-            clk_o_mulmat => aux_clk_o_mulmat
+            done_o_mulmat => aux_done_o_mulmat
         );
     
     instancia_acummulator : component acummulator
@@ -117,11 +99,10 @@ begin
             --input----------------
             data_in_acc => aux_data_o_mulmat,
             done_in_acc => aux_done_o_mulmat,
-            clk_acc => aux_clk_o_mulmat,
+            clk_acc => clk,
 
             --output---------------
-            data_o_acc => aux_data_o_acc,
-            clk_o_acc => aux_clk_o_acc
+            data_o_acc => aux_data_o_acc
         );
 
     instancia_bias_relu : component bias_relu 
@@ -132,22 +113,20 @@ begin
         port map (
             --input----------------
             data_in_bias_relu => aux_data_o_acc,
-            clk_bias_relu => aux_clk_o_acc,
+            clk_bias_relu => clk,
 
             --output---------------
-            data_o_bias_relu => aux_data_o_bias_relu,
-            clk_o_bias_relu => aux_clk_o_bias_relu
+            data_o_bias_relu => aux_data_o_bias_relu
         );
 
     instancia_relu : component relu 
         port map (
             --input----------------
             data_in_relu => aux_data_o_bias_relu,
-            clk_relu => aux_clk_o_bias_relu,
+            clk_relu => clk,
 
             --output---------------
-            data_o_relu => data_o,
-            clk_o_relu => clk_o_relu
+            data_o_relu => data_o
         );
 
 end architecture;

@@ -13,11 +13,8 @@ entity neural_net is
         pixel : in bfloat16;
         addr  : in std_logic_vector(address_size - 1 downto 0);
         clk   : in std_logic;
-        --valid_in : in std_logic;
 
-        ready_input_o :out std_logic_vector(number_of_neurons - 1 downto 0);
-        output : out std_logic_vector(3 downto 0);
-        clk_o  : out std_logic
+        output : out std_logic_vector(3 downto 0)
     );
 end entity;
 
@@ -32,13 +29,9 @@ architecture behave of neural_net is
             data    : in bfloat16;
             address : in std_logic_vector(address_size - 1 downto 0);  
             clk     : in std_logic;
-            ready_in: in std_logic_vector(output_classes - 1 downto 0);
-            --valid   : in std_logic;
-            
-            --addr_o  : out std_logic_vector(address_size - 1 downto 0);
-            data_o  : out bfloat16;
-            ready_o : out std_logic;
-            clk_o_relu   : out std_logic
+            --ready_in: in std_logic_vector(output_classes - 1 downto 0);
+ 
+            data_o  : out bfloat16
         );
     end component;
 
@@ -51,11 +44,8 @@ architecture behave of neural_net is
             data    : in bfloat16;
             address : in std_logic_vector(address_size - 1 downto 0);  
             clk     : in std_logic;
-            --valid   : in std_logic;
     
-            data_o  : out bfloat16;
-            ready_o : out std_logic;
-            clk_o_soft   : out std_logic
+            data_o  : out bfloat16
         );
     end component;
 
@@ -64,8 +54,7 @@ architecture behave of neural_net is
             data_in_output_softmax        : in bus_bfloat16(output_classes - 1 downto 0);    
             clk_output_softmax            : in std_logic;
     
-            data_o_output_softmax          : out std_logic_vector(3 downto 0);
-            clk_o_output_softmax           : out std_logic
+            data_o_output_softmax          : out std_logic_vector(3 downto 0)
         );
     end component;
 
@@ -76,8 +65,7 @@ architecture behave of neural_net is
     signal aux_relu_output : relu_output;
     signal aux_ready_relu  : std_logic_vector(number_of_neurons - 1 downto 0);
     signal aux_ready_soft  : std_logic_vector(output_classes - 1 downto 0);
-    signal aux_clk_o_relu  : std_logic;
-    signal aux_clk_o_soft  : std_logic;
+
     
     signal aux_addr_o_relu : std_logic_vector(address_size - 1 downto 0); 
 
@@ -92,13 +80,9 @@ begin
                 data => pixel,
                 address => addr,
                 clk => clk,
-                ready_in => aux_ready_soft,
-                --valid => valid_in,
-                
-                --addr_o => aux_addr_o_relu,
-                data_o => aux_relu_output(i),
-                ready_o => aux_ready_relu(i),
-                clk_o_relu => aux_clk_o_relu
+                --ready_in => aux_ready_soft,
+
+                data_o => aux_relu_output(i)
             );
         end generate;
 
@@ -112,12 +96,8 @@ begin
                 data => aux_relu_output(i),
                 address => aux_addr_o_relu,
                 clk => clk,
-                --valid => valid_in,
-                
-                
-                data_o => aux_soft_output(i),
-                ready_o => aux_ready_soft(i),
-                clk_o_soft => open
+                         
+                data_o => aux_soft_output(i)
             );
             end generate;
     
@@ -137,8 +117,7 @@ begin
 
                 clk_output_softmax => clk,
             
-                data_o_output_softmax => output,          
-                clk_o_output_softmax => clk_o  
+                data_o_output_softmax => output
             );            
            
     
