@@ -18,9 +18,9 @@ architecture rtl of tb_neural_net is
             clk   : in std_logic;
             --ready_in : out std_logic_vector(number_of_neurons - 1 downto 0);
             --valid_in : in std_logic;
-            ready_input_o : out std_logic_vector(number_of_neurons - 1 downto 0);
-            output : out std_logic_vector(3 downto 0);
-            clk_o  : out std_logic
+            --ready_input_o : out std_logic_vector(number_of_neurons - 1 downto 0);
+            output : out std_logic_vector(3 downto 0)
+            --clk_o  : out std_logic
         );
         end component; 
 
@@ -28,7 +28,7 @@ architecture rtl of tb_neural_net is
         signal pixel_in : bfloat16;
         signal addr_in : std_logic_vector(address_size - 1 downto 0);
         signal output_o : std_logic_vector(3 downto 0);
-        signal ready_in_i : std_logic_vector(number_of_neurons - 1 downto 0);
+        --signal ready_in_i : std_logic_vector(number_of_neurons - 1 downto 0);
 
         constant PERIOD    : time := 20 ns;
         constant DUTY_CYCLE : real := 0.5;
@@ -43,8 +43,8 @@ begin
         pixel => pixel_in,
         addr => addr_in,
         clk => clock,
-        output => output_o,
-        ready_input_o => ready_in_i
+        output => output_o
+        --ready_input_o => ready_in_i
     );
 
     gen_clock: process
@@ -59,15 +59,15 @@ begin
 		end loop CLOCK_LOOP;
 	end process;
 
-    input : process 
+    input : process (clock)
     begin
+        if rising_edge(clock) then
         for i in 27 downto 0 loop
             for x in 27 downto 0 loop
-                while ready_in_i /= ones loop
                     pixel_in <= input_image(i,x);
-                end loop;
             end loop;
         end loop;
+        end if;
     end process;
 
 end architecture;

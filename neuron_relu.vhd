@@ -32,7 +32,7 @@ architecture comportamental of neuron_relu is
         port (
             data_in_mulmat        : in bfloat16;    
             addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
-            clk_mulmat            : in std_logic;
+            clk_in_mulmat            : in std_logic;
     
             data_out_mulmat       : out bfloat16;
             done_o_mulmat         : out std_logic
@@ -87,7 +87,7 @@ begin
             --input----------------
             data_in_mulmat => data,
             addr_in_mulmat => address,
-            clk_mulmat => clk,
+            clk_in_mulmat => clk,
 
             --output---------------
             data_out_mulmat => aux_data_o_mulmat,
