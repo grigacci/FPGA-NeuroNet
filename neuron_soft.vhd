@@ -11,7 +11,7 @@ entity neuron_soft is
     );
 
     port (
-        data    : in bfloat16;
+        data    : in bus_bfloat16(number_of_neurons - 1 downto 0);
         address : in std_logic_vector(address_size - 1 downto 0);  
         clk     : in std_logic;
 
@@ -21,6 +21,20 @@ end neuron_soft;
 
 architecture comportamental of neuron_soft is
     --declaring all internal components 
+    component mux_soft is 
+        generic (
+            instance_number : integer
+        );
+    
+        port (
+            data_in_mux_soft : in bus_bfloat16(number_of_neurons - 1 downto 0);
+            addr_in_mux_soft : in std_logic_vector(address_size - 1 downto 0);
+            clk_mux_soft     : in std_logic;
+    
+            data_o_mux_soft : out bfloat16;
+            connection_o_mux_soft : out std_logic_vector(5 downto 0)
+        );
+    end component;
 
     component mulmat_soft is
         generic (
@@ -29,7 +43,7 @@ architecture comportamental of neuron_soft is
 
         port (
             data_in_mulmat_soft        : in bfloat16;    
-            addr_in_mulmat_soft        : in std_logic_vector(address_size - 1 downto 0);
+            connection_in_mulmat_soft        : in std_logic_vector(5 downto 0);
             clk_mulmat_soft            : in std_logic;
     
             data_o_mulmat_soft         : out bfloat16;
@@ -61,12 +75,31 @@ architecture comportamental of neuron_soft is
     end component;
 
 
+    signal aux_data_o_mux_soft : bfloat16;
+    signal aux_connect_mux_soft : std_logic_vector(5 downto 0);
+
     signal aux_data_o_mulmat_soft : bfloat16;
     signal aux_done_o_mulmat_soft : std_logic;
 
     signal aux_data_o_acc    : bfloat16;
     
+    
 begin
+
+    instancia_mux_soft : component mux_soft 
+        generic map (
+            instance_number => neuron_number
+        )
+
+        port map (
+            data_in_mux_soft => data,
+            addr_in_mux_soft => address,
+            clk_mux_soft     => clk,
+    
+            data_o_mux_soft => aux_data_o_mux_soft,
+            connection_o_mux_soft => aux_connect_mux_soft
+        );
+
 
     instancia_mulmat : component mulmat_soft
         generic map (
@@ -75,10 +108,9 @@ begin
 
         port map(
             --input----------------
-            data_in_mulmat_soft => data,
-            addr_in_mulmat_soft => address,
+            data_in_mulmat_soft => aux_data_o_mux_soft,
+            connection_in_mulmat_soft => aux_connect_mux_soft,
             clk_mulmat_soft => clk,
-            --valid_in_mulmat => valid,
 
             --output---------------
             data_o_mulmat_soft => aux_data_o_mulmat_soft,

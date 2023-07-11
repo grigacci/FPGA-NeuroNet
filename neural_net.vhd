@@ -14,7 +14,7 @@ entity neural_net is
         addr  : in std_logic_vector(address_size - 1 downto 0);
         clk   : in std_logic;
 
-        output : out std_logic_vector(3 downto 0)
+        output_nn : out std_logic_vector(3 downto 0)
     );
 end entity;
 
@@ -41,7 +41,7 @@ architecture behave of neural_net is
         );
     
         port (
-            data    : in bfloat16;
+            data    : in bus_bfloat16(number_of_neurons - 1 downto 0);
             address : in std_logic_vector(address_size - 1 downto 0);  
             clk     : in std_logic;
     
@@ -58,11 +58,10 @@ architecture behave of neural_net is
         );
     end component;
 
-    type relu_output is array (number_of_neurons - 1 downto 0) of bfloat16;
     type soft_output is array (output_classes - 1 downto 0) of bfloat16;
 
-    signal aux_soft_output : soft_output;
-    signal aux_relu_output : relu_output;
+    signal aux_soft_output : bus_bfloat16(output_classes - 1 downto 0);
+    signal aux_relu_output : bus_bfloat16(number_of_neurons - 1 downto 0);
     signal aux_ready_relu  : std_logic_vector(number_of_neurons - 1 downto 0);
     signal aux_ready_soft  : std_logic_vector(output_classes - 1 downto 0);
 
@@ -80,7 +79,6 @@ begin
                 data => pixel,
                 address => addr,
                 clk => clk,
-                --ready_in => aux_ready_soft,
 
                 data_o => aux_relu_output(i)
             );
@@ -93,7 +91,7 @@ begin
                 neuron_number => i
             )
             port map (
-                data => aux_relu_output(i),
+                data => aux_relu_output,
                 address => aux_addr_o_relu,
                 clk => clk,
                          
@@ -117,7 +115,7 @@ begin
 
                 clk_output_softmax => clk,
             
-                data_o_output_softmax => output
+                data_o_output_softmax => output_nn
             );            
            
     

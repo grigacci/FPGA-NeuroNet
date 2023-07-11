@@ -13,7 +13,7 @@ entity mulmat_soft is
 
     port (
         data_in_mulmat_soft        : in bfloat16;    
-        addr_in_mulmat_soft        : in std_logic_vector(address_size - 1 downto 0);
+        connection_in_mulmat_soft  : in std_logic_vector(5 downto 0);
         clk_mulmat_soft            : in std_logic;
         --valid_in_mulmat       : in std_logic;
 
@@ -30,7 +30,7 @@ architecture comportamental of mulmat_soft is
     --signal one : std_logic_vector(output_classes - 1 downto 0) := (others => '1');
 
 begin
-    process(data_in_mulmat_soft,addr_in_mulmat_soft,clk_mulmat_soft)
+    process(data_in_mulmat_soft,connection_in_mulmat_soft,clk_mulmat_soft)
     begin
         if(rising_edge(clk_mulmat_soft)) then
         if initialized = false then                 --initialize the weight array
@@ -40,10 +40,10 @@ begin
             initialized <= True; 
         end if;
 
-        if(to_integer(unsigned(addr_in_mulmat_soft)) = input_size - 1) then
+        if(to_integer(unsigned(connection_in_mulmat_soft)) = input_size - 1) then
             done_o_mulmat_soft <= '1';
         else
-            data_o_mulmat_soft <= data_in_mulmat_soft * weight(to_integer(unsigned(addr_in_mulmat_soft)));
+            data_o_mulmat_soft <= data_in_mulmat_soft * weight(to_integer(unsigned(connection_in_mulmat_soft)));
             done_o_mulmat_soft <= '0';
         end if;
 
