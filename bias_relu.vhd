@@ -20,14 +20,15 @@ entity bias_relu is
     );
 end bias_relu;
 
-architecture comportamental of bias_relu is
-    signal bias_relu : float(0 downto -weight_size + 1) := relu_bias(instance_number);
-    signal aux_out : bfloat16;
+architecture rtl of bias_relu is
+    signal bias_relu : f4 := relu_bias(instance_number);
+    signal aux_sum : float(20 downto -19);
 begin
-    process(data_in_bias_relu,clk_bias_relu)
+    sum_proc : process(data_in_bias_relu,clk_bias_relu)
     begin
         if(rising_edge(clk_bias_relu)) then
-            data_o_bias_relu <= add(data_in_bias_relu,bias_relu);
+            aux_sum <= add(data_in_bias_relu , resize(bias_relu, data_o_bias_relu'length));
         end if;
     end process;
-end comportamental;
+    data_o_bias_relu <= aux_sum(8 downto -7);
+end rtl;

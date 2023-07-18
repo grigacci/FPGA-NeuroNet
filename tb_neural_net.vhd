@@ -27,7 +27,7 @@ architecture rtl of tb_neural_net is
         signal output_o : std_logic_vector(3 downto 0);
 
         constant PERIOD    : time := 20 ns;
-        constant DUTY_CYCLE : real := 0.5;
+        --constant DUTY_CYCLE : real := 0.5;
         --constant OFFSET     : time := 5 ns;
 
         signal aux_saida : std_logic_vector(3 downto 0);

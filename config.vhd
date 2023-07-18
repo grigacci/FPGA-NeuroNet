@@ -30,10 +30,16 @@ use ieee.float_pkg.all;
 use work.CONFIG.ALL;
 
 package bfloat_pkg is 
+
 	subtype bfloat16 is float(8 downto -7);
+    subtype f4 is float(0 downto -weight_size + 1);
+
 	type bus_bfloat16 is array(natural range<>) of bfloat16;
 
-	subtype f4 is float(0 downto -weight_size + 1);
+    subtype UNRESOLVED_bfloat16 is UNRESOLVED_float (8 downto -7);
+    subtype UNRESOLVED_f4 is UNRESOLVED_float (0 downto -weight_size + 1);
+
+	
 
     function to_f4(raw_num : real) return f4;
 	function to_bfloat16(raw_num : real) return bfloat16;

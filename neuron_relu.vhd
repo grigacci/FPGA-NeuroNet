@@ -78,7 +78,7 @@ architecture comportamental of neuron_relu is
 
 begin
 
-    instancia_mulmat_relu : component mulmat_relu
+    instance_mulmat_relu : component mulmat_relu
         generic map (
             instance_number => neuron_number
         )
@@ -94,7 +94,7 @@ begin
             done_o_mulmat => aux_done_o_mulmat
         );
     
-    instancia_acummulator_relu : component acummulator
+    instance_acummulator_relu : component acummulator
         port map(
             --input----------------
             data_in_acc => aux_data_o_mulmat,
@@ -105,7 +105,7 @@ begin
             data_o_acc => aux_data_o_acc
         );
 
-    instancia_bias_relu : component bias_relu 
+    instance_bias_relu : component bias_relu 
         generic map (
             instance_number => neuron_number
         )
@@ -119,7 +119,7 @@ begin
             data_o_bias_relu => aux_data_o_bias_relu
         );
 
-    instancia_relu : component relu 
+    instance_relu : component relu 
         port map (
             --input----------------
             data_in_relu => aux_data_o_bias_relu,
