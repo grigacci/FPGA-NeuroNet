@@ -16,8 +16,8 @@ entity neuron_relu is
         clk     : in std_logic;
         --ready_in: in std_logic_vector(output_classes - 1 downto 0);
         
-        data_o  : out bfloat16;
-        ready_o : out std_logic
+        data_o  : out bfloat16
+        --ready_o : out std_logic
     );
 end neuron_relu;
 
@@ -32,7 +32,7 @@ architecture comportamental of neuron_relu is
         port (
             data_in_mulmat        : in bfloat16;    
             addr_in_mulmat        : in std_logic_vector(address_size - 1 downto 0);
-            clk_in_mulmat            : in std_logic;
+            clk_in_mulmat         : in std_logic;
     
             data_out_mulmat       : out bfloat16;
             done_o_mulmat         : out std_logic
@@ -78,7 +78,7 @@ architecture comportamental of neuron_relu is
 
 begin
 
-    instancia_mulmat : component mulmat_relu
+    instancia_mulmat_relu : component mulmat_relu
         generic map (
             instance_number => neuron_number
         )
@@ -94,7 +94,7 @@ begin
             done_o_mulmat => aux_done_o_mulmat
         );
     
-    instancia_acummulator : component acummulator
+    instancia_acummulator_relu : component acummulator
         port map(
             --input----------------
             data_in_acc => aux_data_o_mulmat,

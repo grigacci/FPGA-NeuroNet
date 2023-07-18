@@ -65,9 +65,6 @@ architecture behave of neural_net is
     signal aux_ready_relu  : std_logic_vector(number_of_neurons - 1 downto 0);
     signal aux_ready_soft  : std_logic_vector(output_classes - 1 downto 0);
 
-    
-    signal aux_addr_o_relu : std_logic_vector(address_size - 1 downto 0); 
-
 begin
 
     gen_layer1 : for i in 0 to number_of_neurons - 1 generate
@@ -85,17 +82,17 @@ begin
         end generate;
 
 
-    gen_layer2 : for i in 0 to output_classes - 1 generate
+    gen_layer2 : for cont in 0 to output_classes - 1 generate
         instance_neuron_soft : component neuron_soft
             generic map (
-                neuron_number => i
+                neuron_number => cont
             )
             port map (
                 data => aux_relu_output,
-                address => aux_addr_o_relu,
+                address => addr,
                 clk => clk,
                          
-                data_o => aux_soft_output(i)
+                data_o => aux_soft_output(cont)
             );
             end generate;
     

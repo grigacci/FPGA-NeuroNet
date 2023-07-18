@@ -22,13 +22,12 @@ end bias_relu;
 
 architecture comportamental of bias_relu is
     signal bias_relu : float(0 downto -weight_size + 1) := relu_bias(instance_number);
+    signal aux_out : bfloat16;
 begin
     process(data_in_bias_relu,clk_bias_relu)
     begin
         if(rising_edge(clk_bias_relu)) then
-
-            data_o_bias_relu <= data_in_bias_relu + bias_relu;
-
+            data_o_bias_relu <= add(data_in_bias_relu,bias_relu);
         end if;
     end process;
 end comportamental;

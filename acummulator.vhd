@@ -23,7 +23,7 @@ begin
     begin
         if(rising_edge(clk_acc)) then
             if (done_in_acc = '0')  then
-            parcial <= parcial + data_in_acc;
+            parcial <= add(parcial,data_in_acc);
 
             else 
                 out_acc <= parcial;

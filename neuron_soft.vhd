@@ -28,6 +28,7 @@ architecture comportamental of neuron_soft is
     
         port (
             data_in_mux_soft : in bus_bfloat16(number_of_neurons - 1 downto 0);
+            
             addr_in_mux_soft : in std_logic_vector(address_size - 1 downto 0);
             clk_mux_soft     : in std_logic;
     

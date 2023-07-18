@@ -27,7 +27,8 @@ begin
     begin
         if(rising_edge(clk_bias_soft)) then
 
-            data_o_bias_soft <= data_in_bias_soft + bias_soft;
+            data_o_bias_soft <= add(data_in_bias_soft,bias_soft);
+            --data_o_bias_soft <= (data_in_bias_soft + bias_soft);
             
         end if;
     end process;

@@ -28,7 +28,7 @@ architecture rtl of tb_neural_net is
 
         constant PERIOD    : time := 20 ns;
         constant DUTY_CYCLE : real := 0.5;
-        constant OFFSET     : time := 5 ns;
+        --constant OFFSET     : time := 5 ns;
 
         signal aux_saida : std_logic_vector(3 downto 0);
         
@@ -45,14 +45,8 @@ begin
 
     gen_clock: process
     begin
-		wait for OFFSET;
-		CLOCK_LOOP :
-        for i in 0 to 65535 loop
-			clock <= '1';
-			wait for (PERIOD - (PERIOD * DUTY_CYCLE));
-			clock <= '0';
-			wait for (PERIOD * DUTY_CYCLE);
-		end loop CLOCK_LOOP;
+        clock <= not(clock);
+        wait for PERIOD/2;
 	end process;
 
     input : process (clock)

@@ -10,7 +10,7 @@ package CONFIG is
 	constant number_of_neurons : integer := 20;
 	constant input_size		: integer := 784;
 
-	constant address_size 	: integer  :=  10;   --Address size needed for input_size
+	constant address_size 	: integer  :=  11;   --Address size needed for input_size
 
 	constant output_classes : integer := 10;	--Number os possible outputs
 end CONFIG;
@@ -37,6 +37,7 @@ package bfloat_pkg is
 
     function to_f4(raw_num : real) return f4;
 	function to_bfloat16(raw_num : real) return bfloat16;
+    function to_bfloat16(raw_num : integer) return bfloat16;
 
 end package;
 
@@ -49,6 +50,13 @@ package body bfloat_pkg is
     end function;
 
 	function to_bfloat16(raw_num : real) return bfloat16 is 
+        variable converted : bfloat16;
+    begin
+        converted := to_float(raw_num)(8 downto -7);
+    return converted;
+    end function;
+
+    function to_bfloat16(raw_num : integer) return bfloat16 is 
         variable converted : bfloat16;
     begin
         converted := to_float(raw_num)(8 downto -7);

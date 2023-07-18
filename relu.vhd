@@ -17,7 +17,7 @@ end relu;
 architecture comportamental of relu is
     signal zero : bfloat16 := (others => '0');
 begin
-    process(data_in_relu)
+    process(data_in_relu,clk_relu)
     begin
     if(rising_edge(clk_relu )) then
         if (data_in_relu > zero) then
