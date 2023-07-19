@@ -25,9 +25,10 @@ end mulmat_relu;
 
 architecture comportamental of mulmat_relu is
 
-    signal done : std_logic;
-    signal aux_data : bfloat16;
-
+    signal done : std_logic := '0';
+    signal aux_data : bfloat16 := to_bfloat16(0.0);
+    signal weight : f4;
+    
 begin
     process(data_in_mulmat,addr_in_mulmat,clk_in_mulmat )
     begin
@@ -37,9 +38,10 @@ begin
                 done <= '1';
          
             else
-                aux_data <= multiply(data_in_mulmat,relu_weights((to_integer(unsigned(addr_in_mulmat))),instance_number));
+                weight <= relu_weights(to_integer(unsigned(addr_in_mulmat)),instance_number);
+                aux_data <= multiply(data_in_mulmat,resize(weight,8,7));
                 done <= '0';
-            end if;
+            end if; 
             
         end if;
     end process;

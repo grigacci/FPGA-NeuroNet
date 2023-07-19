@@ -24,10 +24,10 @@ end mulmat_soft;
 
 architecture comportamental of mulmat_soft is
 
-    --type float_array is array (0 to number_of_neurons - 1) of float (0 downto -weight_size + 1);
-    --signal weight : float_array; 
-    --signal initialized : boolean := False;
-    signal one : std_logic_vector(output_classes - 1 downto 0) := (others => '1');
+    --signal one : std_logic_vector(output_classes - 1 downto 0) := (others => '1');
+    signal done : std_logic := '0';
+    signal aux_data : bfloat16 := to_bfloat16(0.0);
+    signal weight : f4;
 
 begin
     process(data_in_mulmat_soft,connection_in_mulmat_soft,clk_mulmat_soft)
@@ -35,12 +35,17 @@ begin
         if(rising_edge(clk_mulmat_soft)) then
 
             if(to_integer(unsigned(connection_in_mulmat_soft)) = input_size - 1) then
-                done_o_mulmat_soft <= '1';
+                done <= '1';
             else
-                data_o_mulmat_soft <= multiply(data_in_mulmat_soft,soft_weights((to_integer(unsigned(connection_in_mulmat_soft))),instance_number));
-                done_o_mulmat_soft <= '0';
+                weight <= soft_weights(to_integer(unsigned(connection_in_mulmat_soft)),instance_number);
+                aux_data <= multiply(data_in_mulmat_soft,resize(weight,8,7));
+                done <= '0';
             end if;
 
         end if;
     end process;
+
+    data_o_mulmat_soft <= aux_data;
+    done_o_mulmat_soft <= done;
+
 end comportamental;

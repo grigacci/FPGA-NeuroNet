@@ -21,15 +21,12 @@ entity bias_soft is
 end bias_soft;
 
 architecture comportamental of bias_soft is
-    signal bias_soft : float(0 downto -weight_size + 1) := soft_bias(instance_number);
+    signal bias_soft : f4 := soft_bias(instance_number);
 begin
     process(data_in_bias_soft,clk_bias_soft)
     begin
         if(rising_edge(clk_bias_soft)) then
-
-            data_o_bias_soft <= add(data_in_bias_soft,bias_soft);
-            --data_o_bias_soft <= (data_in_bias_soft + bias_soft);
-            
+            data_o_bias_soft <= add(data_in_bias_soft,resize(bias_soft,8,7));   
         end if;
     end process;
 end comportamental;
